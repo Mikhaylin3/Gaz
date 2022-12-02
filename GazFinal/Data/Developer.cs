@@ -11,6 +11,7 @@ namespace GazFinal.Data
         public string? KPP { get; set; }
         [BsonIgnoreIfNull]
         public string? OGNR { get; set; }
+        [BsonIgnoreIfNull]
         public string? Address { get; set; }
         [BsonIgnoreIfNull]
         public List<Project> projects = new List<Project>();

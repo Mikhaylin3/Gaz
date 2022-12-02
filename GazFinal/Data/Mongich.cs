@@ -26,6 +26,13 @@ namespace GazFinal.Data
             }
             return result;
         }
+        public static void ReplaceByNameDoc(Project documents, string login)
+        {
+            var client = new MongoClient();
+            var database = client.GetDatabase("Davletka");
+            var collection = database.GetCollection<Project>("Documents");
+            collection.ReplaceOne(x => x.Name == login, documents);
+        }
 
         public static void AddToDb(User use)
         {

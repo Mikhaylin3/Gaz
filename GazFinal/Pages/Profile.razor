@@ -5,59 +5,160 @@
 
 <h3>Your Profile</h3>
 <p><label>Name:</label></p>
-<p><input type="text">@user.Name<input/></p>
+<p><input type="text" @bind-value="Name"/></p>
 <p><label>Login:</label></p>
-<p><input type="text"><input />@user.Login</p>
+<p><input type="text" @bind-value="Login"/></p>
 <p><label>Password:</label></p>
-<p><input type="password"><input />@user.Password</p>
+<p><input type="password" @bind-value="Password"></p>
 <p><label>Phone:</label></p>
-<p><input type="text" maxlength="12"><input />@user.Phone</p>
+<p><input type="text" maxlength="12" @bind-value="Phone"></p>
+<p><label>Email:</label></p>
+<p><input type="text" maxlength="12" @bind-value="Email"></p>
 @if (user.GetType().Name == "Developer")
 {
     <p><label>INN:</label></p>
-    <p><input type="text" maxlength="12" />@((user as Developer).INN)</p>
+    <p><input type="text" maxlength="12" @bind-value=INN /></p>
     <p><label>KPP:</label></p>
-    <p><input type="text" maxlength="12"/>@((user as Developer).KPP)</p>
+    <p><input type="text" maxlength="12" @bind-value=KPP /></p>
     <p><label>OGNR:</label></p>
-    <p><input type="text" maxlength="12" />@((user as Developer).OGNR)</p>
+    <p><input type="text" maxlength="12" @bind-value=OGNR /></p>
     <p><label>Adress:</label></p>
-    <p><input type="text" />@((user as Developer).Address)</p>
+    <p><input type="text" @bind-value=Address /></p>
+    <p><button type="button" @onclick="Projecting">Create Project</button></p>
 }
 @if (user.GetType().Name == "Desingner")
 {
     <p><label>Full Name:</label></p>
-    <p><input type="text" />@((user as Desingner).FullName)</p>
+    <p><input type="text" @bind-value=FullName/></p>
     <p><label>Department:</label></p>
-    <p><input type="text" />@((user as Desingner).Department)</p>
+    <p><input type="text" @bind-value=Departament /></p>
 }
 @if (user.GetType().Name == "Projector")
 {
     <p><label>Name Director:</label></p>
-    <p><input type="text" />@((user as Projector).nameDirector)</p>
+    <p><input type="text" @bind-value=nameDirector /></p>
     <p><label>Name Organization:</label></p>
-    <p><input type="text" />@((user as Projector).NameOrg)</p>
+    <p><input type="text" bind-value="NameOrg" @bind-value=NameOrg /></p>
     <p><label>INN:</label></p>
-    <p><input type="text" maxlength="12" />@((user as Projector).INN)</p>
+    <p><input type="text" maxlength="12" @bind-value=INN/></p>
     <p><label>KPP:</label></p>
-    <p><input type="text" maxlength="12" />@((user as Projector).KPP)</p>
+    <p><input type="text" maxlength="12" @bind-value=KPP /></p>
     <p><label>OGNR:</label></p>
-    <p><input type="text" maxlength="12" />@((user as Projector).OGNR)</p>
+    <p><input type="text" maxlength="12" @bind-value=OGNR /></p>
     <p><label>Main Engineet:</label></p>
-    <p><input type="text" />@((user as Projector).Engineer)</p>
+    <p><input type="text" @bind-value=Engineer /></p>
 }
-<p><button type="button" @onclick="Change">Change</button> <button type="button" @onclick="Change">Change</button></p>
+<p><button type="button" @onclick="Change">Change</button> <button type="button" @onclick="SignOut">SignOut</button></p>
 @code {
+    public string? INN;
+    public string? KPP;
+    public string? OGNR;
+    public string? FullName;
+    public string? Name;
+    public string? Login;
+    public string? Password;
+    public string? NameOrg;
+    public string? Engineer;
+    public string? Departament;
+    public string? Phone;
+    public string? Email;
+    public string? Address;
+    public string? nameDirector;
+
     public User user;
-    void Change()
+    protected override void OnInitialized()
     {
+        user = ser.GetUser();
+        Name = user.Name;
+        Login = user.Login;
+        Password = user.Password;
+        Phone = user.Phone;
+        Email = user.Email;
+        if (user.GetType().Name == "Developer")
+        {
+            INN = (user as Developer).INN;
+            KPP = (user as Developer).KPP;
+            OGNR = (user as Developer).OGNR;
+            Address = (user as Developer).Address;
+        }
+        if (user.GetType().Name == "Projector")
+        {
+            INN = (user as Projector).INN;
+            KPP = (user as Projector).KPP;
+            OGNR = (user as Projector).OGNR;
+            Engineer = (user as Projector).Engineer;
+            nameDirector = (user as Projector).nameDirector;
+            NameOrg = (user as Projector).NameOrg;
+        }
+        if(user.GetType().Name == "Desingner")
+        {
+            FullName = (user as Desingner).FullName;
+            Departament = (user as Desingner).Department;
+        }
+    }
+    public  void Change()
+    {
+
+        
+        switch (user.GetType().Name)
+
+        {
+            case "Developer":
+                
+                user = new Developer()
+                    {
+                        Name = Name,
+                        Login = Login,
+                        Phone = Phone,
+                        Email = Email,
+                        Password =Password,
+                        INN = INN,
+                        OGNR = OGNR,
+                        KPP = KPP,
+                    };
+                Mongich.ReplaceByName(user, Login);
+                break;
+            case "Desingner":
+
+                user = new Desingner()
+                    {
+                        Name = Name,
+                        Login = Login,
+                        Phone = Phone,
+                        Email = Email,
+                        Password = Password,
+                        FullName = (user as Desingner).FullName,
+                        Department = (user as Desingner).Department,
+                    };
+                Mongich.ReplaceByName(user, Login);
+                break;
+            case "Projector":
+
+                user = new Projector()
+                    {
+                        Name = Name,
+                        Login = Login,
+                        Phone = Phone,
+                        Email = Email,
+                        Password = Password,
+                        INN = (user as Projector).INN,
+                        OGNR = (user as Projector).OGNR,
+                        KPP = (user as Projector).KPP,
+                        Engineer = (user as Projector).Engineer,
+                        NameOrg = (user as Projector).NameOrg,
+                        nameDirector = (user as Projector).nameDirector,
+                    };
+                Mongich.ReplaceByName(user, Login);
+                break;
+        }
 
     }
     void SignOut()
     {
-
+        nav.NavigateTo("/autorization");
     }
     void Projecting()
     {
-        
+        nav.NavigateTo("/");
     }
 }

@@ -17,5 +17,8 @@ namespace GazFinal.Data
 
         public User? Projector { get; set; }
 
+        [BsonIgnoreIfNull]
+        public List<DeveloperData> DevDoc = new List<DeveloperData>();
+        public List<ProjectData>ProjDoc = new List<ProjectData>();
     }
 }
