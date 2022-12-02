@@ -1,0 +1,63 @@
+﻿@page "/profile"
+@using GazFinal.Data;
+@inject NavigationManager nav;
+@inject Mongich ser;
+
+<h3>Your Profile</h3>
+<p><label>Name:</label></p>
+<p><input type="text">@user.Name<input/></p>
+<p><label>Login:</label></p>
+<p><input type="text"><input />@user.Login</p>
+<p><label>Password:</label></p>
+<p><input type="password"><input />@user.Password</p>
+<p><label>Phone:</label></p>
+<p><input type="text" maxlength="12"><input />@user.Phone</p>
+@if (user.GetType().Name == "Developer")
+{
+    <p><label>INN:</label></p>
+    <p><input type="text" maxlength="12" />@((user as Developer).INN)</p>
+    <p><label>KPP:</label></p>
+    <p><input type="text" maxlength="12"/>@((user as Developer).KPP)</p>
+    <p><label>OGNR:</label></p>
+    <p><input type="text" maxlength="12" />@((user as Developer).OGNR)</p>
+    <p><label>Adress:</label></p>
+    <p><input type="text" />@((user as Developer).Address)</p>
+}
+@if (user.GetType().Name == "Desingner")
+{
+    <p><label>Full Name:</label></p>
+    <p><input type="text" />@((user as Desingner).FullName)</p>
+    <p><label>Department:</label></p>
+    <p><input type="text" />@((user as Desingner).Department)</p>
+}
+@if (user.GetType().Name == "Projector")
+{
+    <p><label>Name Director:</label></p>
+    <p><input type="text" />@((user as Projector).nameDirector)</p>
+    <p><label>Name Organization:</label></p>
+    <p><input type="text" />@((user as Projector).NameOrg)</p>
+    <p><label>INN:</label></p>
+    <p><input type="text" maxlength="12" />@((user as Projector).INN)</p>
+    <p><label>KPP:</label></p>
+    <p><input type="text" maxlength="12" />@((user as Projector).KPP)</p>
+    <p><label>OGNR:</label></p>
+    <p><input type="text" maxlength="12" />@((user as Projector).OGNR)</p>
+    <p><label>Main Engineet:</label></p>
+    <p><input type="text" />@((user as Projector).Engineer)</p>
+}
+<p><button type="button" @onclick="Change">Change</button> <button type="button" @onclick="Change">Change</button></p>
+@code {
+    public User user;
+    void Change()
+    {
+
+    }
+    void SignOut()
+    {
+
+    }
+    void Projecting()
+    {
+        
+    }
+}

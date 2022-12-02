@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GazFinal", "GazFinal\GazFinal.csproj", "{438135DE-F994-4833-815B-970F33B9BC1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{438135DE-F994-4833-815B-970F33B9BC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438135DE-F994-4833-815B-970F33B9BC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438135DE-F994-4833-815B-970F33B9BC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438135DE-F994-4833-815B-970F33B9BC1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94E9C192-158E-47EA-A026-B23B41E4C325}
+	EndGlobalSection
+EndGlobal

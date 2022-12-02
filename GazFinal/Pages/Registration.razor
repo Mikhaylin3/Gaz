@@ -1,0 +1,152 @@
+﻿@page "/registration"
+@using GazFinal.Data;
+@inject NavigationManager nav;
+@namespace GazFinal.Pages
+<h3>Registration</h3>
+<p><label>Name:</label></p>
+<p><input type="text" @bind-value="Name"/></p>
+<p><label>Login:</label></p>
+<p><input type="text" @bind-value="Login" /></p>
+@if (ErrorInputLogin )
+{
+    <p><label style="color: red;font-weight: 500;">Такой логин уже существует!!!</label></p>
+}
+<p><label>Password:</label></p>
+<p><input type="password" @bind-value="Password" /></p>
+<p><label>Repeat Password:</label></p>
+<p><input type="password" @bind-value="pPassword" /></p>
+@if (ErrorPassword)
+{
+    <p><label style="color: red;font-weight: 500;">Пароли не совпадают</label></p>
+}
+<p><label>Email:</label></p>
+<p><input type="text"  @bind-value="Email" /></p>
+@if (ErrorEmail )
+{
+    <p><label style="color: red;font-weight: 500;">Такой почта уже существует!!!</label></p>
+}
+<p><label>Phone:</label></p>
+<p><input maxlength="12" type="text" @bind-value="Phone" /></p>
+<p>
+    <label>
+        Select a Role:
+        <select @bind="@Role">
+            <option value="">Select a Role</option>
+            <option value="Developer">Developer</option>
+            <option value="Projector">Projector</option>
+            <option value="Desingner">Desingner</option>
+        </select>
+    </label>
+</p>
+<p><button type="button" @onclick="@Registr">Register</button> <button type="button" @onclick="@SignOut">Sign Out</button></p>
+@if (Error)
+{
+    <p><label style="color: red;font-weight: 500;">Вы ввели не все данные!!!</label></p>
+}
+@code {
+    private string? Name;
+    private string? Login;
+    private string? Password;
+    private string? pPassword;
+    private string? Email;
+    private string? Phone;
+    private string? Role;
+    bool ErrorInputLogin = false;
+    bool ErrorPassword = false;
+    bool ErrorEmail = false;
+    bool Error = false;
+    public void Registr()
+    {
+        var users = Mongich.FindAll();
+        if (Name != null && pPassword != null && Password != null && Phone != null && Email != null && Login != null)
+        {
+
+            foreach (var user in users)
+            {
+                if (Login == user.Login)
+                {
+                    ErrorInputLogin = true;
+                    return;
+                }
+                else
+                {
+                    ErrorInputLogin = false;
+                    if (Email == user.Email)
+                    {
+                        ErrorEmail = true; 
+                        return;
+                    }
+                    else
+                    {
+                        ErrorEmail = false;
+                    }
+                }
+
+            }
+            if (Password != pPassword)
+            {
+                ErrorPassword = true;
+                return;
+            }
+            else
+            {
+                ErrorPassword = false;
+            }
+            if ("Developer" == Role)
+            {
+                User dev = new Developer()
+                    {
+                        Login = Login,
+                        Password = Password,
+                        Name = Name,
+                        Email = Email,
+                        Phone = Phone,
+
+                    };
+                Error = false;
+                Mongich.AddToDb(dev);
+                nav.NavigateTo("/autorization");
+            }
+            if ("Desingner" == Role)
+            {
+                User des = new Desingner()
+                    {
+                        Login = Login,
+                        Password = Password,
+                        Name = Name,
+                        Email = Email,
+                        Phone = Phone,
+                    };
+                Error = false;
+                Mongich.AddToDb(des);
+                nav.NavigateTo("/autorization");
+            }
+            if ("Projector" == Role)
+            {
+                User des = new Projector()
+                    {
+                        Login = Login,
+                        Password = Password,
+                        Name = Name,
+                        Email = Email,
+                        Phone = Phone,
+
+                    };
+                Error = false;
+                Mongich.AddToDb(des);
+                nav.NavigateTo("/autorization");
+
+            }
+        
+        }
+        else
+        {
+            Error = true;
+            return;
+        }
+    }
+    public void SignOut()
+    {
+        nav.NavigateTo("/");
+    }
+}

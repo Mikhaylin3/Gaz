@@ -1,0 +1,40 @@
+﻿@page "/autorization"
+@using GazFinal.Data;
+@inject NavigationManager nav;
+@inject Mongich ser;
+
+<p><label>Enter login:</label></p>
+<p><input type="text" @bind-value="Login"/></p>
+<p><label>Enter password:</label></p>
+<p><input type="password" @bind-value="Password"/></p>
+<p><button type="button" @onclick="SignIn">OK</button>   <button type="button" @onclick="Registr">Registration</button> </p>
+@if(Error)
+{
+    <p><label style="color: red;font-weight: 500;">Неправильный логин или пароль!!!!</label></p>
+}
+<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private string? Login;
+    private string? Password;
+    bool Error = false;
+    private void SignIn()
+    {
+        var user = Mongich.FindAll();
+        foreach( var users in user)
+        {
+            if (Login == users.Login && Password ==users.Password)
+            {
+                ser.SetUser(users);
+                nav.NavigateTo("/profile");
+            }
+            else
+            {
+                Error = true;
+            }
+        }
+    }
+    private void Registr()
+    {
+        nav.NavigateTo("/registration");
+    }
+}
