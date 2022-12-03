@@ -3,8 +3,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace GazFinal.Data
 {
+
     public class ProjectData
     {
+        public ProjectData(string name, bool required)
+        {
+            Name = name; 
+            Required = required;
+        }
         [BsonId]
         [BsonIgnoreIfDefault]
         ObjectId id;

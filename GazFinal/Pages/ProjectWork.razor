@@ -14,12 +14,12 @@
 
     <label>
         Choose Desingner
-    </label>    
+    </label>
 
 
-   <select @bind="@desingner">
+<select @bind="@developer">
         <option></option>
-        @foreach (var i in desingners)
+    @foreach (var i in developers)
         {
             <option value="@i.Login">@i.Login</option>
         }
@@ -43,9 +43,9 @@
     private string? projName;
     private string? Login;
     private string? Departman;
-    private string? desingner;
+    private string? developer;
     private string? projector;
-    List<User>? desingners;
+    List<User>? developers;
     List<User>? projectors;
     private string? Projects;
     bool Error;
@@ -53,22 +53,23 @@
     protected override void OnInitialized()
     {
         projectors = Mongich.FindAllProjector();
-        desingners = Mongich.FindAllDeveloper();
+        developers = Mongich.FindAllDeveloper();
         user = ser.GetUser();
         Login = user.Login;
     }
     void Create()
     {
 
-        var d = Mongich.Find(desingner);
+        var d = Mongich.Find(developer);
         var p = Mongich.Find(projector);
-        if(desingner ==null || projector==null || projName==null || desingner == string.Empty || projector == string.Empty)
+        if (developer == null || projector == null || projName == null || developer == string.Empty || projector == string.Empty)
         {
             Error = true;
             return;
         }
-        Project project = new Project(projName, (user as Desingner).Department, Mongich.Find(desingner),
-        Mongich.Find(projector));
+
+        Project project = new Project(projName, (user as Desingner).Department, Mongich.Find(developer), Mongich.Find(projector));
+        ser.SetProject(project);
 
         ser.SetProject(project);
         if(project.Type == "Gasification")
@@ -79,6 +80,15 @@
         {
             (user as Desingner).projectsWater.Add(project);
         }
+        var newD = (Mongich.Find(developer)) as Developer;
+        newD.Projects.Add(project);
+        var newProj = (Mongich.Find(projector)) as Projector;
+        newD.Projects.Add(project);
+        Mongich.Replace(user.Login, (user as Desingner));
+        Mongich.Replace(((Mongich.Find(developer)) as Developer).Login, newD);
+        Mongich.Replace(((Mongich.Find(projector)) as Projector).Login, newProj);
+        Mongich.AddProjectToDB(project);
+        nav.NavigateTo("//projectDesingner");
     }
 }
 

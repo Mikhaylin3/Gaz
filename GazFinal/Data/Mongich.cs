@@ -19,20 +19,14 @@ namespace GazFinal.Data
             var database = client.GetDatabase("Gaz");
             var col = database.GetCollection<User>("User");
             var t = col.Find(x => true).ToList();
-            List<User> result = new List<User>();
+            var result = new List<User>();
             foreach (var i in t)
             {
                 result.Add(i);
             }
             return result;
         }
-        public static void ReplaceByNameDoc(Project documents, string login)
-        {
-            var client = new MongoClient();
-            var database = client.GetDatabase("Gaz");
-            var collection = database.GetCollection<Project>("Project");
-            collection.ReplaceOne(x => x.Name == login, documents);
-        }
+
 
         public static void AddToDb(User use)
         {
@@ -73,7 +67,13 @@ namespace GazFinal.Data
             }
             return users;
         }
-
+        public static void Replace(string login, User user)
+        {
+            var client = new MongoClient();
+            var database = client.GetDatabase("Gaz");
+            var collection = database.GetCollection<User>("User");
+            collection.ReplaceOne(z => z.Login == login, user);
+        }
         public static List<User> FindAllDeveloper()
         {
             var client = new MongoClient();
@@ -117,7 +117,13 @@ namespace GazFinal.Data
             var list = collection.Find(x => x.Name == name).FirstOrDefault();
             return list;
         }
-
+        public static void ReplaceByNameDoc(Project documents, string login)
+        {
+            var client = new MongoClient();
+            var database = client.GetDatabase("Gaz");
+            var collection = database.GetCollection<Project>("Project");
+            collection.ReplaceOne(x => x.Name == login, documents);
+        }
 
     }
 }

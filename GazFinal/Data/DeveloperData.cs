@@ -5,6 +5,11 @@ namespace GazFinal.Data
 {
     public class DeveloperData
     {
+        public DeveloperData(string name, bool required)
+        {
+            this.Name = name;
+            this.Required = required;
+        }
         [BsonId]
         [BsonIgnoreIfDefault]
         ObjectId id;

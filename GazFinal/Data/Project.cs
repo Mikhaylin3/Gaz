@@ -15,13 +15,13 @@ namespace GazFinal.Data
         [BsonId]
         [BsonIgnoreIfDefault]
         ObjectId _id;
-
+        [BsonIgnoreIfNull]
         public string? Name { get; set; }
-
+        [BsonIgnoreIfNull]
         public string? Type { get; set; }
-
+        [BsonIgnoreIfNull]
         public User? Desingner { get; set; }
-
+        [BsonIgnoreIfNull]
         public User? Projector { get; set; }
 
         [BsonIgnoreIfNull]

@@ -14,6 +14,6 @@ namespace GazFinal.Data
         [BsonIgnoreIfNull]
         public string? Address { get; set; }
         [BsonIgnoreIfNull]
-        public List<Project> projects = new List<Project>();
+        public List<Project> Projects = new List<Project>();
     }
 }
