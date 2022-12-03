@@ -124,22 +124,24 @@
             
             foreach (var user in users)
             {
-                if (Login == user.Login)
+                if (Login == user.Login && Password == user.Password && Email == user.Email)
                 {
-                    ErrorInputLogin = true;
+                    ErrorInputLogin = false;
                     return;
                 }
                 else
                 {
-                    ErrorInputLogin = false;
+                    ErrorInputLogin = true;
                     if (Email == user.Email)
                     {
                         ErrorEmail = true;
+                        ErrorInputLogin = false;
                         return;
                     }
                     else
                     {
                         ErrorEmail = false;
+                        ErrorInputLogin = false;
                     }
                 }
             }

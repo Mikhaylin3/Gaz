@@ -26,7 +26,7 @@
     <p><label style="color: red;font-weight: 500;">Такой почта уже существует!!!</label></p>
 }
 <p><label>Phone:</label></p>
-<p><input maxlength="12" type="text" @bind-value="Phone" /></p>
+<p><input maxlength="12" data-mask="+{7}(000)000-00-00" type="text" @bind-value="Phone" /></p>
 <p>
     <label>
         Select a Role:

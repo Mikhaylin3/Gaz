@@ -42,12 +42,14 @@
     public User? user;
     private string? projName;
     private string? Login;
+    private string? Departman;
     private string? desingner;
     private string? projector;
     List<User>? desingners;
     List<User>? projectors;
     private string? Projects;
-    bool Error; 
+    bool Error;
+    string? g = "";
     protected override void OnInitialized()
     {
         projectors = Mongich.FindAllProjector();
@@ -57,7 +59,7 @@
     }
     void Create()
     {
-        
+
         var d = Mongich.Find(desingner);
         var p = Mongich.Find(projector);
         if(desingner ==null || projector==null || projName==null || desingner == string.Empty || projector == string.Empty)
@@ -65,10 +67,9 @@
             Error = true;
             return;
         }
-        Project project = new Project();
-        {
+        Project project = new Project(projName, (user as Desingner).Department, Mongich.Find(desingner),
+        Mongich.Find(projector));
 
-        }
         ser.SetProject(project);
         if(project.Type == "Gasification")
         {

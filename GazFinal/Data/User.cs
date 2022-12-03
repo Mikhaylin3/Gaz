@@ -13,6 +13,7 @@ namespace GazFinal.Data
         public string? Password { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
+        [BsonRequired]
         public string? Phone { get; set;}
         
     }

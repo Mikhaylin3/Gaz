@@ -5,6 +5,13 @@ namespace GazFinal.Data
 {
     public class Project
     {
+        public Project(string name, string type, User desingner, User projector)
+        {
+            Name = name;
+            Type = type;
+            Desingner = desingner;
+            Projector = projector;
+        }
         [BsonId]
         [BsonIgnoreIfDefault]
         ObjectId _id;
@@ -13,7 +20,7 @@ namespace GazFinal.Data
 
         public string? Type { get; set; }
 
-        public User? Developer { get; set; }
+        public User? Desingner { get; set; }
 
         public User? Projector { get; set; }
 
