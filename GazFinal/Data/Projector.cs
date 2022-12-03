@@ -14,6 +14,9 @@ namespace GazFinal.Data
         [BsonIgnoreIfNull]
         public string? OGNR { get; set; }
         [BsonIgnoreIfNull]
+        
+        public string? Address { get; set; }
+        [BsonIgnoreIfNull]
         public string? nameDirector { get; set; }
         [BsonIgnoreIfNull]
         public string? Engineer { get; set; }

@@ -8,12 +8,20 @@
 <p><input type="text" @bind-value="Name"/></p>
 <p><label>Login:</label></p>
 <p><input type="text" @bind-value="Login"/></p>
+@if (ErrorInputLogin)
+{
+    <p><label style="color: red;font-weight: 500;">Такой логин уже существует!!!</label></p>
+}
 <p><label>Password:</label></p>
 <p><input type="password" @bind-value="Password"></p>
 <p><label>Phone:</label></p>
 <p><input type="text" maxlength="12" @bind-value="Phone"></p>
 <p><label>Email:</label></p>
 <p><input type="text" maxlength="12" @bind-value="Email"></p>
+@if (ErrorEmail)
+{
+    <p><label style="color: red;font-weight: 500;">Такая почта уже существует!!!</label></p>
+}
 @if (user.GetType().Name == "Developer")
 {
     <p><label>INN:</label></p>
@@ -32,6 +40,7 @@
     <p><input type="text" @bind-value=FullName/></p>
     <p><label>Department:</label></p>
     <p><input type="text" @bind-value=Departament /></p>
+    <p><button type="button" @onclick="Edit">Project</button></p>
 }
 @if (user.GetType().Name == "Projector")
 {
@@ -46,9 +55,16 @@
     <p><label>OGNR:</label></p>
     <p><input type="text" maxlength="12" @bind-value=OGNR /></p>
     <p><label>Main Engineet:</label></p>
+    <p><label>Adress:</label></p>
+    <p><input type="text" @bind-value=Address /></p>
     <p><input type="text" @bind-value=Engineer /></p>
+    <p><button type="button" @onclick="Projecting">Project</button></p>
 }
 <p><button type="button" @onclick="Change">Change</button> <button type="button" @onclick="SignOut">SignOut</button></p>
+@if(Error)
+{
+    <p><label style="color: red;font-weight: 500;">Заполните поля!!!</label></p>
+}
 @code {
     public string? INN;
     public string? KPP;
@@ -64,6 +80,9 @@
     public string? Email;
     public string? Address;
     public string? nameDirector;
+    bool ErrorEmail;
+    bool ErrorInputLogin;
+    bool Error;
 
     public User user;
     protected override void OnInitialized()
@@ -89,6 +108,7 @@
             Engineer = (user as Projector).Engineer;
             nameDirector = (user as Projector).nameDirector;
             NameOrg = (user as Projector).NameOrg;
+            Address = (user as Projector).Address;
         }
         if(user.GetType().Name == "Desingner")
         {
@@ -98,58 +118,90 @@
     }
     public  void Change()
     {
-
-        
-        switch (user.GetType().Name)
-
+        var users = Mongich.FindAll();
+        if (Name != null && Password != null && Phone != null && Email != null && Login != null)
         {
-            case "Developer":
-                
-                user = new Developer()
+            
+            foreach (var user in users)
+            {
+                if (Login == user.Login)
+                {
+                    ErrorInputLogin = true;
+                    return;
+                }
+                else
+                {
+                    ErrorInputLogin = false;
+                    if (Email == user.Email)
                     {
-                        Name = Name,
-                        Login = Login,
-                        Phone = Phone,
-                        Email = Email,
-                        Password =Password,
-                        INN = INN,
-                        OGNR = OGNR,
-                        KPP = KPP,
-                    };
-                Mongich.ReplaceByName(user, Login);
-                break;
-            case "Desingner":
+                        ErrorEmail = true;
+                        return;
+                    }
+                    else
+                    {
+                        ErrorEmail = false;
+                    }
+                }
+            }
 
-                user = new Desingner()
-                    {
-                        Name = Name,
-                        Login = Login,
-                        Phone = Phone,
-                        Email = Email,
-                        Password = Password,
-                        FullName = (user as Desingner).FullName,
-                        Department = (user as Desingner).Department,
-                    };
-                Mongich.ReplaceByName(user, Login);
-                break;
-            case "Projector":
+            switch (user.GetType().Name)
 
-                user = new Projector()
-                    {
-                        Name = Name,
-                        Login = Login,
-                        Phone = Phone,
-                        Email = Email,
-                        Password = Password,
-                        INN = (user as Projector).INN,
-                        OGNR = (user as Projector).OGNR,
-                        KPP = (user as Projector).KPP,
-                        Engineer = (user as Projector).Engineer,
-                        NameOrg = (user as Projector).NameOrg,
-                        nameDirector = (user as Projector).nameDirector,
-                    };
-                Mongich.ReplaceByName(user, Login);
-                break;
+            {
+                case "Developer":
+
+                    user = new Developer()
+                        {
+                            Name = Name,
+                            Login = Login,
+                            Phone = Phone,
+                            Email = Email,
+                            Password = Password,
+                            INN = INN,
+                            OGNR = OGNR,
+                            KPP = KPP,
+                            Address = Address,
+                        };
+                    Mongich.ReplaceByName(user, Login);
+                    break;
+                case "Desingner":
+
+                    user = new Desingner()
+                        {
+                            Name = Name,
+                            Login = Login,
+                            Phone = Phone,
+                            Email = Email,
+                            Password = Password,
+                            FullName = (user as Desingner).FullName,
+                            Department = (user as Desingner).Department,
+                        };
+                    Mongich.ReplaceByName(user, Login);
+                    break;
+                case "Projector":
+
+                    user = new Projector()
+                        {
+                            Name = Name,
+                            Login = Login,
+                            Phone = Phone,
+                            Email = Email,
+                            Password = Password,
+                            INN = (user as Projector).INN,
+                            OGNR = (user as Projector).OGNR,
+                            KPP = (user as Projector).KPP,
+                            Engineer = (user as Projector).Engineer,
+                            NameOrg = (user as Projector).NameOrg,
+                            nameDirector = (user as Projector).nameDirector,
+                        };
+                    Mongich.ReplaceByName(user, Login);
+                    break;
+            }
+
+        }
+        else
+        {
+            Error = true;
+            return;
         }
 
     }
@@ -159,6 +211,10 @@
     }
     void Projecting()
     {
-        nav.NavigateTo("/");
+        nav.NavigateTo("/file");
+    }
+    void Edit()
+    {
+        nav.NavigateTo("/projectDesingner");
     }
 }

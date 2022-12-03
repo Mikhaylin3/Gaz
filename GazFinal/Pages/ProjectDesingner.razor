@@ -1,0 +1,55 @@
+﻿@page "/projectDesingner"
+@using GazFinal.Data
+@inject NavigationManager nav
+@inject Mongich ser
+<p><label>Disingner @desingner.Name</label></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Project name:</th>
+            <th>Developer</th>
+            <th>Desingner</th>
+            <th>Open project</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach( var proj in GetProjects())
+        {
+            <tr>
+                <td>@proj.Name</td>
+                <td>@proj.Developer.Login</td>
+                <td>@proj.Projector.Login</td>
+                <td><button type="button"@onclick="() => VerifyProject(proj)">Open</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="button" @onclick="CreateProject">Project</button>
+@code {
+    Desingner desingner;
+
+    protected override void OnInitialized()
+    {
+        desingner = ser.GetUser() as Desingner;
+    }
+    void VerifyProject(Project project)
+    {
+        Project t = Mongich.FindProject(project.Name);
+        ser.SetProject(t);
+    }
+    private List<Project> GetProjects()
+    {
+        if (desingner.Department == "Gasification")
+        {
+            return desingner.projectsGas;
+        }
+        else
+        {
+            return desingner.projectsWater;
+        }
+    }
+    private void CreateProject()
+    {
+        nav.NavigateTo("/file");
+    }
+}

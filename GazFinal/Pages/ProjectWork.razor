@@ -1,0 +1,83 @@
+﻿@page "/file"
+@using GazFinal.Data
+@inject Mongich ser
+@inject NavigationManager nav
+<h3>File, @user.Login</h3>
+<p>
+    <select @bind="@Projects">
+        <option value="">Select a Role</option>
+        <option value="Gazification">Gazification</option>
+        <option value="WaterSupply">WaterSupply</option>>
+    </select>
+</p>
+<p><input type="text" @bind-value="projName" /></p>
+
+    <label>
+        Choose Desingner
+    </label>    
+
+
+   <select @bind="@desingner">
+        <option></option>
+        @foreach (var i in desingners)
+        {
+            <option value="@i.Login">@i.Login</option>
+        }
+    </select>
+
+<label>Select planner </label>
+    <select @bind=projector >
+        <option></option>
+        @foreach (var i in projectors)
+        {
+            <option value="@i.Login">@i.Login</option>
+        }
+    </select>
+<p><button type="button" @onclick=Create>Create project</button></p>
+@if(Error)
+{
+    <p><label style="color: red;font-weight: 500;" >Введите все данные</label></p>
+}
+@code {
+    public User? user;
+    private string? projName;
+    private string? Login;
+    private string? desingner;
+    private string? projector;
+    List<User>? desingners;
+    List<User>? projectors;
+    private string? Projects;
+    bool Error; 
+    protected override void OnInitialized()
+    {
+        projectors = Mongich.FindAllProjector();
+        desingners = Mongich.FindAllDeveloper();
+        user = ser.GetUser();
+        Login = user.Login;
+    }
+    void Create()
+    {
+        
+        var d = Mongich.Find(desingner);
+        var p = Mongich.Find(projector);
+        if(desingner ==null || projector==null || projName==null || desingner == string.Empty || projector == string.Empty)
+        {
+            Error = true;
+            return;
+        }
+        Project project = new Project();
+        {
+
+        }
+        ser.SetProject(project);
+        if(project.Type == "Gasification")
+        {
+            (user as Desingner).projectsGas.Add(project);
+        }
+        else
+        {
+            (user as Desingner).projectsWater.Add(project);
+        }
+    }
+}
+

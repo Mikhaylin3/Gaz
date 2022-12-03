@@ -1,0 +1,38 @@
+﻿@*@page "/projWater"
+@using GazFinal.Data
+@inject NavigationManager nav
+@inject Mongich ser
+@if(user.GetType().Name == "Customer")
+{
+    <h2>Документы застройщика</h2>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Documents name</th>
+                <th>file</th>
+                <th>ItsOK </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in DeveloperDict)
+            {
+                <tr>
+                    <td>@DeveloperDict[i.Key]</td>
+                    @if (docs.Find(x => x.Name == DeveloperDict[i.Key]) != null && docs.Find(x => x.Name == DeveloperDict[i.Key]).Name == DeveloperDict[i.Key])
+                    {
+                        <td> <button type="button" class="btn btn-info" @onclick="() => Load(DeveloperDict[i.Key])">Load</button> </td>
+                        <td><input type="checkbox" @bind-value=checkBox></input></td>
+                    }
+                    else
+                    {
+                        <td> <label> Не загружено </label> </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+@code {
+    private IBrowserFile load;
+}
+*@
